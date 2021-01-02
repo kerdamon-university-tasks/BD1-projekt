@@ -1,33 +1,42 @@
 var session = require('express-session');
+const pool = require('../db/database-connection');
 
-class AuthController 
-{
-    showLoginForm = (req, res) => {
-        res.render('pages/login-form');
+class AuthController {
+  showLoginForm = (req, res) => {
+    res.render('pages/login-form', { isLogged: req.session.loggedin });
+  }
+
+  login = async (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+
+    const result = await pool.query('SELECT * FROM auth_user where username=$1 and password=$2;', [username, password]);
+
+    if (result.rows.length) {
+      req.session.loggedin = true;
+      req.session.username = req.body.username;
+      console.log("User logged in")
     }
 
-    login = (req, res) => {
-        req.session.loggedin = true;
-        req.session.username = req.body.username;
-        res.redirect('/');
+    res.redirect('/');
+  }
+
+  logout = (req, res) => {
+    req.session.destroy(function () {
+      console.log("User logged out")
+    });
+    res.redirect('/auth/login');
+  }
+
+  checkSignIn = (req, res, next) => {
+    if (req.session.loggedin) {
+      next();
+    } else {
+      var err = new Error("Not logged in");
+      console.log(req.session.username);
+      next(err);
     }
-
-    logout = (req, res) => {
-        req.session.destroy(function(){
-           console.log("User logged out.")
-        });
-        res.redirect('/auth/login');
-     }
-
-    checkSignIn = (req, res, next) => {
-        if(req.session.loggedin){
-           next();     //If session exists, proceed to page
-        } else {
-           var err = new Error("Not logged in");
-           console.log(req.session.username);
-           next(err);  //Error, trying to access unauthorized page!
-        }
-     }
+  }
 }
 
 const controller = new AuthController();

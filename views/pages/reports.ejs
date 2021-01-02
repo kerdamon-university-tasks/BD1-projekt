@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include('../partials/header'); %>
+</head>
+
+<body>
+
+  <%- include('../partials/nav'); %>
+
+  <div class="container">
+    <h2>Database Results</h2>
+
+    <ul>
+      <% results.forEach(function(r) { %>
+        <li>
+          <%= r.imie %> - <%= r.nazwisko %> - <%= r.nazwa %>
+        </li>
+        <% }); %>
+    </ul>
+
+  </div>
+
+</body>
+
+</html>
