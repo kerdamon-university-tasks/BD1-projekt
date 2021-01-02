@@ -24,4 +24,5 @@ class DbController
       }
 }
 
-module.exports = DbController;
+const controller = new DbController();
+module.exports = controller;

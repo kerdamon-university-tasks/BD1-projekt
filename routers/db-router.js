@@ -1,10 +1,10 @@
 const { Router } = require('express');
 
-const infoController = require('../controllers/db-controller');
-const controller = new infoController();
+const controller = require('../controllers/db-controller');
+const authController = require('../controllers/auth-controller');
 
 const router = Router();
 
-router.get('/', controller.selectCzlonek);
+router.get('/', authController.checkSignIn, controller.selectCzlonek);
 
 module.exports = router;

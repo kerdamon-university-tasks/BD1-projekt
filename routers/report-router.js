@@ -1,10 +1,9 @@
 const { Router } = require('express');
 
-const infoController = require('../controllers/report-controller');
-const controller = new infoController();
+const controller = require('../controllers/db-controller');
 
 const router = Router();
 
-router.get('/', controller.showInfo);
+router.get('/', controller.selectCzlonek);
 
 module.exports = router;

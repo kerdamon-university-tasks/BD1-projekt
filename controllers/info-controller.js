@@ -5,4 +5,5 @@ class InfoController
     }
 }
 
-module.exports = InfoController;
+const controller = new InfoController();
+module.exports = controller;
