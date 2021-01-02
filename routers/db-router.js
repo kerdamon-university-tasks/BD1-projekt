@@ -5,6 +5,7 @@ const authController = require('../controllers/auth-controller');
 
 const router = Router();
 
-router.get('/', authController.checkSignIn, controller.selectCzlonek);
+// router.get('/', authController.checkSignIn, controller.selectCzlonek);
+router.get('/', controller.selectCzlonek);
 
 module.exports = router;
