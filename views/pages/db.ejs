@@ -9,13 +9,12 @@
 
   <%- include('../partials/nav'); %>
 
-  <div class="container">
-    <h2>Database Results</h2>
-
-    <%- include('../partials/db-basic-table', results); %>
-
-  </div>
-
+  <% resultTables.forEach(function(table) { %>
+    <div class="container">
+      <h2> <%= table.tableName %> </h2>
+      <%- include('../partials/db-basic-table', {results: table.results}); %>
+    </div>
+  <% }); %>
 </body>
 
 </html>
