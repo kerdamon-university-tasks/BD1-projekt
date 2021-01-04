@@ -5,7 +5,8 @@ const middlewares = require('../middlewares/middleware-functions');
 
 const router = Router();
 
-router.get('/', middlewares.checkSignIn, controller.selectCzlonek);
-router.get('/all', controller.selectAll);
+router.get('/', middlewares.checkSignIn, controller.showDBHub);
+router.get('/all', middlewares.checkSignIn, controller.selectAll);
+router.get('/report', controller.showReport)
 
 module.exports = router;

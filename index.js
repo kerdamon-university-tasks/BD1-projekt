@@ -7,7 +7,6 @@ const middlewares = require('./middlewares/middleware-functions');
 const PORT = process.env.PORT || 5000;
 
 const infoRouter = require('./routers/info-router');
-const reportRouter = require('./routers/report-router');
 const dbRouter = require('./routers/db-router');
 const authRouter = require('./routers/auth-router');
 
@@ -22,7 +21,6 @@ express()
 
   .use('/', infoRouter)
   .use('/info', infoRouter)
-  .use('/report', reportRouter)
   .use('/db', dbRouter)
   .use('/auth', authRouter)
 
