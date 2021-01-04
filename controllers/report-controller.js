@@ -8,7 +8,6 @@ class ReportController {
     }
     catch (err) {
       console.error(err);
-      res.send("Error " + err);
     }
   }
 }

@@ -1,11 +1,10 @@
 const { Router } = require('express');
 
 const controller = require('../controllers/db-controller');
-const authController = require('../controllers/auth-controller');
+const middlewares = require('../middlewares/middleware-functions');
 
 const router = Router();
 
-// router.get('/', authController.checkSignIn, controller.selectCzlonek);
-router.get('/', controller.selectCzlonek);
+router.get('/', middlewares.checkSignIn, controller.selectCzlonek);
 
 module.exports = router;

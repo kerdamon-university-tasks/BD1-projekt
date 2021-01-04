@@ -27,16 +27,6 @@ class AuthController {
     });
     res.redirect('/auth/login');
   }
-
-  checkSignIn = (req, res, next) => {
-    if (req.session.loggedin) {
-      next();
-    } else {
-      var err = new Error("Not logged in");
-      console.log(req.session.username);
-      next(err);
-    }
-  }
 }
 
 const controller = new AuthController();

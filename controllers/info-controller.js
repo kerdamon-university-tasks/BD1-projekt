@@ -1,8 +1,7 @@
-class InfoController 
-{
-    showInfo = (req, res) => {
-        res.render('pages/index', {isLogged: req.session.loggedin});
-    }
+class InfoController {
+  showInfo = (req, res) => {
+    res.render('pages/index', { isLogged: req.session.loggedin });
+  }
 }
 
 const controller = new InfoController();

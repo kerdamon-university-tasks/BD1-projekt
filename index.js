@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const errorHandler = require('./middlewares/error-handling');
+const middlewares = require('./middlewares/middleware-functions');
 
 const PORT = process.env.PORT || 5000;
 
@@ -26,6 +26,6 @@ express()
   .use('/db', dbRouter)
   .use('/auth', authRouter)
 
-  .use(errorHandler)
+  .use(middlewares.errorHandler)
 
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
