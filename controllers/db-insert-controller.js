@@ -6,7 +6,6 @@ class DbInsertController
     const tableName = req.params.tableName;
     const results = await pool.query(`SELECT * FROM ${tableName}`);
     res.render('pages/db-insert-table', { isLogged: req.session.loggedin, tableName, results});
-    res.send(results);
   }
 }
 

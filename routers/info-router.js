@@ -5,6 +5,6 @@ const middlewares = require('../middlewares/middleware-functions');
 
 const router = Router();
 
-router.get('/', middlewares.checkSignIn, controller.showInfo);
+router.get('/', controller.showInfo);
 
 module.exports = router;

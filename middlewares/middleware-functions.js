@@ -4,7 +4,7 @@ function errorHandler(err, req, res, next) {
   if(createError.isHttpError(err))
     HTTPErrorHandler(res, req, err);
 
-  console.log(err);
+  console.error(err.message);
   res.render('pages/error', {err, isLogged: req.session.loggedin});
 }
 
