@@ -15,7 +15,7 @@ class AuthController {
     if (result.rows.length) {
       req.session.loggedin = true;
       req.session.username = req.body.username;
-      req.session.cookie.expires = new Date(Date.now() + 1000 * 60 * 5);  //5 minutes timeout
+      req.session.cookie.expires = new Date(Date.now() + 1000 * 60 * 60);  //hour timeout
       console.log("User logged in")
     }
 

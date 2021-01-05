@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <%- include('../partials/header'); %>
+  <%- include('../partials/head'); %>
 </head>
 
 <body>
@@ -18,9 +18,14 @@
         <a href="/db/report" class="btn btn-info" role="button"> Raporty </a>
       </p>
       <h2>Wprowadzanie danych</h2>
-      <p>
-        <a href="/db/insertTables" class="btn btn-info" role="button"> Wprowadzanie do tabel </a>
-      </p>
+      <table class="table">
+        <% tableNames.forEach(function(name) { %>
+            <tr>
+              <td><h4><%= name.table_name %></h4></td>
+              <td><a href="/db/insert/<%= name.table_name %>" class="btn btn-info" role="button"> Wprowaź dane </a></td>
+            </tr>
+        <% }); %>
+      </table>
     </div>
   </div>
 

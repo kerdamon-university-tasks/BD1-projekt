@@ -3,7 +3,9 @@ const pool = require('../db/database-connection');
 class DbController 
 {
   showDBHub = async (req, res) => {
-    res.render('pages/dbHub', { isLogged: req.session.loggedin });
+    const tableNames = await pool.query("select table_name from information_schema.tables where table_schema='public' and table_type='BASE TABLE'");
+    console.log(tableNames.rows[0].table_name);
+    res.render('pages/dbHub', { isLogged: req.session.loggedin, tableNames: tableNames.rows});
   }
 
   selectAllTables = async (req, res) => {
