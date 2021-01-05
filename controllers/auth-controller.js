@@ -10,7 +10,7 @@ class AuthController {
     let username = req.body.username;
     let password = req.body.password;
 
-    const result = await pool.query('SELECT * FROM auth_user where username=$1 and password=$2;', [username, password]);
+    const result = await pool.query('SELECT * FROM auth.user where username=$1 and password=$2;', [username, password]);
 
     if (result.rows.length) {
       req.session.loggedin = true;
