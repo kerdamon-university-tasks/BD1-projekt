@@ -12,9 +12,10 @@
   <%- include('../partials/nav'); %>
 
   <div class="container">
-    <h2> <%= resultTables[0].tableDisplayName %> </h2>
-    <p style="visibility: collapse;" class="table-name"><%= resultTables[0].tableName %></p>
-    <%- include('../partials/db-clickable-table', {resultTable: resultTables[0]}); %>
+    <div class="shadow p-4 mb-4">
+      <h2> <%= resultTables[0].tableDisplayName %> </h2>
+      <%- include('../partials/db-clickable-table', {resultTable: resultTables[0]}); %>
+    </div>
   </div>
 
   <%- include('../partials/show-all-tables', {resultTables: resultTables.slice(1)}); %>

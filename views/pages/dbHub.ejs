@@ -10,8 +10,18 @@
   <%- include('../partials/nav'); %>
 
   <div class="container">
-    <a href="/db/all"> Wszystkie </a>
-    <a href="/db/report"> Raporty </a>
+    <div class="jumbotron">
+      <h2>Przegląd danych</h2>
+      <p>
+        <a href="/db/allTables" class="btn btn-info" role="button"> Wszystkie Tabele </a>
+        <a href="/db/allViews" class="btn btn-info" role="button"> Wszystkie Widoki </a>
+        <a href="/db/report" class="btn btn-info" role="button"> Raporty </a>
+      </p>
+      <h2>Wprowadzanie danych</h2>
+      <p>
+        <a href="/db/insertTables" class="btn btn-info" role="button"> Wprowadzanie do tabel </a>
+      </p>
+    </div>
   </div>
 
 </body>

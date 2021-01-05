@@ -1,6 +1,6 @@
 class InfoController {
   showInfo = (req, res) => {
-    res.render('pages/index', { isLogged: req.session.loggedin });
+    res.render('pages/info', { isLogged: req.session.loggedin });
   }
 }
 

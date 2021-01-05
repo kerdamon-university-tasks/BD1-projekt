@@ -1,7 +1,8 @@
 <% resultTables.forEach(function(table) { %>
   <div class="container">
-    <h2> <%= table.tableDisplayName %> </h2>
-    <p style="visibility: collapse;" class="table-name"><%= table.tableName %></p>
-    <%- include('../partials/db-basic-table', {results: table.results}); %>
+    <div class="shadow p-4 mb-4">
+      <h2> <%= table.tableDisplayName %> </h2>
+      <%- include('../partials/db-basic-table', {results: table.results}); %>
+    </div>
   </div>
 <% }); %>

@@ -1,16 +1,16 @@
 <table class="table table-dark table-stripped">
-    <tr>
+  <tr>
+      <% results.fields.forEach(function(f) { %>
+          <th>
+            <%= f.name %>
+          </th>
+      <% }); %>
+  </tr>
+  <% results.rows.forEach(function(r) { %>
+      <tr>
         <% results.fields.forEach(function(f) { %>
-            <th>
-              <%= f.name %>
-            </th>
+          <td><%= r[f.name] %></td>
         <% }); %>
-    </tr>
-    <% results.rows.forEach(function(r) { %>
-        <tr>
-          <% results.fields.forEach(function(f) { %>
-            <td><%= r[f.name] %></td>
-          <% }); %>
-        </tr>
-    <% }); %>
+      </tr>
+  <% }); %>
 </table>
