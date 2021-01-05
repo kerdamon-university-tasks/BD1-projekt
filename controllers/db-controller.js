@@ -50,18 +50,18 @@ class DbController
     try {
       const resultTables = [];
       let results;
-
+    
       results = await pool.query("select czlonek_id, imie, nazwisko, status_nazwa.nazwa from (select * from czlonek join aktualny_status using(czlonek_id)) czl join status_nazwa on(status=status_id) order by status");
-      resultTables.push({tableDisplayName: 'Lista członków', idFieldName: 'czlonek_id', results});
+      resultTables.push({tableDisplayName: 'Lista członków', tableName: 'czlonek', idFieldName: 'czlonek_id', results});
 
       results = await pool.query("select imie, nazwisko, ominietych_skladek from liczba_ominietych_skladek join czlonek using(czlonek_id)");
-      resultTables.push({tableDisplayName: 'Zalegający', results});
+      resultTables.push({tableDisplayName: 'Zalegający', tableName: 'liczba_ominietych_skladek', results});
 
       results = await pool.query("select imie, nazwisko, nazwa_zasobu, typ_zasobu, data_od from czlonek_przetrzymuje_zasob");
-      resultTables.push({tableDisplayName: 'Przetrzymujący', results});
+      resultTables.push({tableDisplayName: 'Przetrzymujący', tableName: 'czlonek_przetrzymuje_zasob', results});
 
       results = await pool.query("select nazwa_zasobu, nazwa as typ, wydawca, uwagi, imie, nazwisko from (select nazwa as nazwa_zasobu, typ_zasobu_id, wydawca, uwagi, imie, nazwisko from (select * from zasob left join wypozyczenie using (zasob_id)) zw left join czlonek using (czlonek_id)) ntwuin join typ_zasobu using (typ_zasobu_id)");
-      resultTables.push({tableDisplayName: 'Zasoby', results});
+      resultTables.push({tableDisplayName: 'Zasoby', tableName: 'zasoby', results});
 
       res.render('pages/reports', { resultTables, isLogged: req.session.loggedin });
     }
