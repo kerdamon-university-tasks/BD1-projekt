@@ -7,6 +7,9 @@ const router = Router();
 
 router.get('/', middlewares.checkSignIn, controller.showDBHub);
 router.get('/all', middlewares.checkSignIn, controller.selectAll);
+
 router.get('/report', controller.showReport)
+router.get('/czlonek/:id', controller.showSpecifiedMember)
+
 
 module.exports = router;

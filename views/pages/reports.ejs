@@ -3,6 +3,8 @@
 
 <head>
   <%- include('../partials/header'); %>
+  <link rel="stylesheet" href="/stylesheets/clickable-table.css">
+  <script src="/scripts/clickable_table.js"></script> 
 </head>
 
 <body>
@@ -10,17 +12,12 @@
   <%- include('../partials/nav'); %>
 
   <div class="container">
-    <h2>Database Results</h2>
-
-    <ul>
-      <% results.forEach(function(r) { %>
-        <li>
-          <%= r.imie %> - <%= r.nazwisko %> - <%= r.nazwa %>
-        </li>
-        <% }); %>
-    </ul>
-
+    <h2> <%= resultTables[0].tableDisplayName %> </h2>
+    <p style="visibility: collapse;" class="table-name"><%= resultTables[0].tableName %></p>
+    <%- include('../partials/db-clickable-table', {resultTable: resultTables[0]}); %>
   </div>
+
+  <%- include('../partials/show-all-tables', {resultTables: resultTables.slice(1)}); %>
 
 </body>
 
