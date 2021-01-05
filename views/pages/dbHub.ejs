@@ -13,11 +13,15 @@
   <div class="container">
     <div class="jumbotron">
       <h2>Przegląd danych</h2>
-      <p>
-        <a href="/db/allTables" class="btn btn-info" role="button"> Wszystkie Tabele </a>
-        <a href="/db/allViews" class="btn btn-info" role="button"> Wszystkie Widoki </a>
-        <a href="/db/report" class="btn btn-info" role="button"> Raporty </a>
-      </p>
+      <div class="m-5 text-center">
+        <a href="/db/allTables" class="btn-lg btn-info p-3" role="button"> Wszystkie Tabele </a>
+      </div>
+      <div class="m-5 text-center">
+        <a href="/db/allViews" class="btn-lg btn-info p-3" role="button"> Wszystkie Widoki </a>
+      </div>
+      <div class="m-5 text-center">
+        <a href="/db/report" class="btn-lg btn-info p-3" role="button"> Raporty </a>
+      </div>
       <h2>Wprowadzanie danych</h2>
       <table class="table">
         <% tableNames.forEach(function(name) { %>
