@@ -4,7 +4,6 @@ class DbController
 {
   showDBHub = async (req, res) => {
     const tableNames = await pool.query("select table_name from information_schema.tables where table_schema='public' and table_type='BASE TABLE'");
-    console.log(tableNames.rows[0].table_name);
     res.render('pages/dbHub', { isLogged: req.session.loggedin, tableNames: tableNames.rows});
   }
 
@@ -20,7 +19,7 @@ class DbController
         }
       }
 
-      res.render('pages/db-all-tables', { resultTables, isLogged: req.session.loggedin });
+      res.render('pages/db-all-tables', { resultTables, isLogged: req.session.loggedin, headerText:'Wszystkie Tabele' });
     }
     catch (err) {
       console.error(err);
@@ -40,7 +39,7 @@ class DbController
         }
       }
 
-      res.render('pages/db-all-tables', { resultTables, isLogged: req.session.loggedin });
+      res.render('pages/db-all-tables', { resultTables, isLogged: req.session.loggedin, headerText: 'Wszystkie Widoki' });
     }
     catch (err) {
       console.error(err);
@@ -107,31 +106,6 @@ class DbController
       resultTables.push({tableDisplayName: 'Obecności na spotkaniach', results});
 
       res.render('pages/specified-member', { resultTables, isLogged: req.session.loggedin });
-    }
-    catch (err) {
-      console.error(err);
-      res.send("Error " + err);
-    }
-  }
-
-  insertTables = async (req, res) => {
-    try {
-      const resultTables = [];
-      let results;
-
-      results = await pool.query("select czlonek_id, imie, nazwisko, status_nazwa.nazwa from (select * from czlonek join aktualny_status using(czlonek_id)) czl join status_nazwa on(status=status_id) order by status");
-      resultTables.push({tableDisplayName: 'Lista członków', idFieldName: 'czlonek_id', results});
-
-      results = await pool.query("select imie, nazwisko, ominietych_skladek from liczba_ominietych_skladek join czlonek using(czlonek_id)");
-      resultTables.push({tableDisplayName: 'Zalegający', results});
-
-      results = await pool.query("select imie, nazwisko, nazwa_zasobu, typ_zasobu, data_od from czlonek_przetrzymuje_zasob");
-      resultTables.push({tableDisplayName: 'Przetrzymujący', results});
-
-      results = await pool.query("select nazwa_zasobu, nazwa as typ, wydawca, uwagi, imie, nazwisko from (select nazwa as nazwa_zasobu, typ_zasobu_id, wydawca, uwagi, imie, nazwisko from (select * from zasob left join wypozyczenie using (zasob_id)) zw left join czlonek using (czlonek_id)) ntwuin join typ_zasobu using (typ_zasobu_id)");
-      resultTables.push({tableDisplayName: 'Zasoby', results});
-
-      res.render('pages/reports', { resultTables, isLogged: req.session.loggedin });
     }
     catch (err) {
       console.error(err);

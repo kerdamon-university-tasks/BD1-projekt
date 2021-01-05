@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
   <%- include('../partials/head'); %>
 </head>
@@ -8,10 +7,7 @@
 <body>
 
   <%- include('../partials/nav'); %>
-  <%- include('../partials/header', {headerText}); %>
-
-  <%- include('../partials/show-all-tables', resultTables); %>
-
+  <%- include('../partials/header', {headerText: `Wstawianie danych do tabeli ${tableName}`}); %>
+    
 </body>
-
 </html>

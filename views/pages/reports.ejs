@@ -10,13 +10,10 @@
 <body>
 
   <%- include('../partials/nav'); %>
-
-  <div class="jumbotron text-center">
-    <h1 class="jumbotron-heading">Raporty</h1>
-  </div>
+  <%- include('../partials/header', {headerText: 'Raporty'}); %>
 
   <div class="container">
-    <div class="shadow p-4 mb-4">
+    <div class="jumbotron shadow p-4 mb-4">
       <h2> <%= resultTables[0].tableDisplayName %> </h2>
       <%- include('../partials/db-clickable-table', {resultTable: resultTables[0]}); %>
     </div>
