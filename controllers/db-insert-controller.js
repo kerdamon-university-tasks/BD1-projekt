@@ -1,11 +1,16 @@
 const pool = require('../db/database-connection');
+const notSimpleInstertTables = require('../db/table-info');
 
 class DbInsertController
 {
-  insertIntoTable = async (req, res) => {
+  showInsertForm = async (req, res) => {
     const tableName = req.params.tableName;
-    const results = await pool.query(`SELECT * FROM ${tableName}`);
-    res.render('pages/db-insert-table', { isLogged: req.session.loggedin, tableName, results});
+    if(!notSimpleInstertTables.includes(tableName)){
+      const results = await pool.query(`SELECT * FROM ${tableName}`);
+      res.render('pages/db-insert-table', { isLogged: req.session.loggedin, tableName, results});
+    }
+    else
+      res.send("complex");
   }
 }
 

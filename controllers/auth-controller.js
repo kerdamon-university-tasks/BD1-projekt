@@ -17,9 +17,9 @@ class AuthController {
       req.session.username = req.body.username;
       req.session.cookie.expires = new Date(Date.now() + 1000 * 60 * 60);  //hour timeout
       console.log("User logged in")
+      res.redirect('/');
     }
-
-    res.redirect('/');
+    res.redirect('/auth/login');
   }
 
   logout = (req, res) => {

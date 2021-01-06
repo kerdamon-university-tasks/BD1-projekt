@@ -1,10 +1,16 @@
 const pool = require('../db/database-connection');
+const notSimpleInsertTables = require('../db/table-info');
 
 class DbController 
 {
   showDBHub = async (req, res) => {
     const tableNames = await pool.query("select table_name from information_schema.tables where table_schema='public' and table_type='BASE TABLE'");
-    res.render('pages/dbHub', { isLogged: req.session.loggedin, tableNames: tableNames.rows});
+    let simpleInsertTableNames = [];
+    tableNames.rows.forEach(element => {
+      if(!notSimpleInsertTables.includes(element.table_name))
+        simpleInsertTableNames.push(element);
+    });
+    res.render('pages/dbHub', { isLogged: req.session.loggedin, simpleInsertTableNames});
   }
 
   selectAllTables = async (req, res) => {

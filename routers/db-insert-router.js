@@ -6,7 +6,7 @@ const middlewares = require('../middlewares/middleware-functions');
 
 const router = Router();
 
-router.get('/:tableName', middlewares.checkSignIn, controller.insertIntoTable);
+router.get('/:tableName', middlewares.checkSignIn, controller.showInsertForm);
 
 
 module.exports = router;

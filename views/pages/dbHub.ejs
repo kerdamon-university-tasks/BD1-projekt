@@ -22,15 +22,9 @@
       <div class="m-5 text-center">
         <a href="/db/report" class="btn-lg btn-info p-3" role="button"> Raporty </a>
       </div>
+
       <h2>Wprowadzanie danych</h2>
-      <table class="table">
-        <% tableNames.forEach(function(name) { %>
-            <tr>
-              <td><h4><%= name.table_name %></h4></td>
-              <td><a href="/db/insert/<%= name.table_name %>" class="btn btn-info" role="button"> Wprowadź dane </a></td>
-            </tr>
-        <% }); %>
-      </table>
+      <%- include('../partials/show-simple-insert-tables'); %>
     </div>
   </div>
 

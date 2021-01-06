@@ -7,10 +7,12 @@
   <script src="/scripts/clickable_table.js"></script> 
 </head>
 
-<body>
+<body data-spy="scroll" data-target=".navbar-scrollspy" data-offset="50">
 
   <%- include('../partials/nav'); %>
   <%- include('../partials/header', {headerText: 'Raporty'}); %>
+
+  <!-- <%- include('../partials/navbar-scrollspy'); %> -->
 
   <div class="container">
     <div class="jumbotron shadow p-4 mb-4">
