@@ -1,16 +1,19 @@
 const pool = require('../db/database-connection');
-const notSimpleInsertTables = require('../db/table-info');
+const { complexTableNames, complexFormNames } = require('../db/table-info');
 
 class DbController 
 {
   showDBHub = async (req, res) => {
-    const tableNames = await pool.query("select table_name from information_schema.tables where table_schema='public' and table_type='BASE TABLE'");
-    let simpleInsertTableNames = [];
-    tableNames.rows.forEach(element => {
-      if(!notSimpleInsertTables.includes(element.table_name))
-        simpleInsertTableNames.push(element);
+    const allTableNames = await pool.query("select table_name from information_schema.tables where table_schema='public' and table_type='BASE TABLE'");
+    let tableNames = [];
+    allTableNames.rows.forEach(element => {
+      if(!complexTableNames.includes(element.table_name))
+        tableNames.push(element);
     });
-    res.render('pages/dbHub', { isLogged: req.session.loggedin, simpleInsertTableNames});
+    complexFormNames.forEach(element => {
+      tableNames.push({table_name: element});
+    });
+    res.render('pages/dbHub', { isLogged: req.session.loggedin, tableNames });
   }
 
   selectAllTables = async (req, res) => {
