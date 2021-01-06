@@ -12,6 +12,13 @@ class DbInsertController
       await this.showComplexInsertForm(req, res);
   }
 
+  insertIntoTable = async (req, res) => {
+    const tableName = req.params.tableName;
+    const tableData = req.body;
+    let query = `insert into ${tableName} values (${Object.values(tableData).reverse().reduce((value, str) => `${str}, ${value}`)})`;
+    res.redirect('/db/allTables');
+  }
+
   showSimpleInsertForm = async (req, res, tableName) => {
     const results = await pool.query(`SELECT * FROM ${tableName}`);
     let excludeFirst = false;
