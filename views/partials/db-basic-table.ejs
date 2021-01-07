@@ -9,9 +9,12 @@
   <% results.rows.forEach(function(r) { %>
       <tr>
         <% results.fields.forEach(function(f) {
-          if (f.dataTypeID == 1082){ 
-            let dateField = new Date(r[f.name]);
-            let value = `${dateField.getFullYear()}-${dateField.getDate()}-${dateField.getMonth() + 1}`;
+          if (f.dataTypeID == 1082){
+            let value = '-';
+            if (r[f.name]){
+              let dateField = new Date(r[f.name]);
+              value = `${dateField.getFullYear()}-${dateField.getMonth() + 1}-${dateField.getDate()}`;
+            }
             %>
             <td><%= value %></td>
           <% } else { %>

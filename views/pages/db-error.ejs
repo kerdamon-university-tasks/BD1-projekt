@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+  <title>Error <%= err.name %></title>
+</head>
+
+<body>
+  <%- include('../partials/nav'); %>
+  <div class="jumbotron bg-danger text-white">
+    <h1>Błąd bazy danych</h1>
+    <h2>Opis:<small> <%= err.message %></small></h2>
+  </div>
+</body>
+
+</html>

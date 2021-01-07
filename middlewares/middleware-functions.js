@@ -1,11 +1,13 @@
 const createError = require('http-errors');
 
 function errorHandler(err, req, res, next) {
-  if(createError.isHttpError(err))
+  if(createError.isHttpError(err)){
     HTTPErrorHandler(res, req, err);
-
-  console.error(err.message);
-  res.render('pages/error', {err, isLogged: req.session.loggedin});
+  }
+  else {
+    console.error(err.message);
+    res.render('pages/error', {err, isLogged: req.session.loggedin});
+  }
 }
 
 function HTTPErrorHandler(res, req, err){

@@ -70,7 +70,7 @@ class DbController
       results = await pool.query("select imie, nazwisko, nazwa_zasobu, typ_zasobu, data_od from czlonek_przetrzymuje_zasob");
       resultTables.push({tableDisplayName: 'Przetrzymujący', tableName: 'czlonek_przetrzymuje_zasob', results});
 
-      results = await pool.query("select nazwa_zasobu, nazwa as typ, wydawca, uwagi, imie, nazwisko from (select nazwa as nazwa_zasobu, typ_zasobu_id, wydawca, uwagi, imie, nazwisko from (select * from zasob left join wypozyczenie using (zasob_id)) zw left join czlonek using (czlonek_id)) ntwuin join typ_zasobu using (typ_zasobu_id)");
+      results = await pool.query("select nazwa_zasobu, nazwa as typ, wydawca, uwagi, imie as imie_wypozyczajacego, nazwisko as nazwisko_wypozyczajacego from (select nazwa as nazwa_zasobu, typ_zasobu_id, wydawca, uwagi, imie, nazwisko from (select * from zasob left join wypozyczenie using (zasob_id)) zw left join czlonek using (czlonek_id)) ntwuin join typ_zasobu using (typ_zasobu_id)");
       resultTables.push({tableDisplayName: 'Zasoby', tableName: 'zasoby', results});
 
       res.render('pages/reports', { resultTables, isLogged: req.session.loggedin });
@@ -99,7 +99,7 @@ class DbController
       results = await pool.query("select nazwa as funkcja, nazwa_wydarzenia, data_od, data_do from (select funkcja, nazwa as nazwa_wydarzenia, data_od, data_do from uczestnik join wydarzenie using(wydarzenie_id) where czlonek_id=$1) fndd join uczestnik_funkcja on funkcja=uczestnik_funkcja_id", [memberId]);
       resultTables.push({tableDisplayName: 'Wydarzenia', results});
 
-      results = await pool.query("select nazwa, data_od, data_do from status_czlonka join status_nazwa on status_czlonka.status = status_nazwa.status_id where czlonek_id=$1 order by data_od", [memberId]);
+      results = await pool.query("select nazwa, data_od, data_do from status_czlonka join status_nazwa on status_czlonka.status = status_nazwa.status_id where czlonek_id=$1 order by data_do, data_od", [memberId]);
       resultTables.push({tableDisplayName: 'Historia statusu', results});
 
       results = await pool.query("select nazwa_zasobu, nazwa, data_od from (select zasob_id, nazwa as nazwa_zasobu, typ_zasobu_id, data_od from aktualne_wypozyczenia join zasob using(zasob_id) where czlonek_id=$1) zntd join typ_zasobu using(typ_zasobu_id)", [memberId]);
