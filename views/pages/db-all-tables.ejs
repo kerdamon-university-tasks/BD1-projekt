@@ -5,12 +5,13 @@
   <%- include('../partials/head'); %>
 </head>
 
-<body data-spy="scroll" data-target=".navbar-scrollspy" data-offset="200">
+<body data-spy="scroll" data-target=".navbar-scrollspy" data-offset="300">
 
   <%- include('../partials/nav'); %>
   <%- include('../partials/header', {headerText}); %>
 
   <%- include('../partials/navbar-scrollspy'); %>
+  <div class="p-3"></div>
   <%- include('../partials/show-all-tables', resultTables); %>
 
 </body>

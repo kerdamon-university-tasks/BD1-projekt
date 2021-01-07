@@ -8,9 +8,16 @@
   </tr>
   <% results.rows.forEach(function(r) { %>
       <tr>
-        <% results.fields.forEach(function(f) { %>
-          <td><%= r[f.name] %></td>
-        <% }); %>
+        <% results.fields.forEach(function(f) {
+          if (f.dataTypeID == 1082){ 
+            let dateField = new Date(r[f.name]);
+            let value = `${dateField.getFullYear()}-${dateField.getDate()}-${dateField.getMonth() + 1}`;
+            %>
+            <td><%= value %></td>
+          <% } else { %>
+            <td><%= r[f.name] %></td>
+          <% }
+        }); %>
       </tr>
   <% }); %>
 </table>

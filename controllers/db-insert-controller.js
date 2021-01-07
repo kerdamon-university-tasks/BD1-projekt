@@ -15,8 +15,25 @@ class DbInsertController
   insertIntoTable = async (req, res) => {
     const tableName = req.params.tableName;
     const tableData = req.body;
-    let query = `insert into ${tableName} values (${Object.values(tableData).reverse().reduce((value, str) => `${str}, ${value}`)})`;
-    res.redirect('/db/allTables');
+
+    const results = await pool.query(`SELECT * FROM ${tableName}`);
+    res.send(results);
+    
+    // try{
+    //   let query = `insert into ${tableName} values (${Object.values(tableData).reverse().reduce((value, str, index) => {
+    //     // if(results.fields[index].dataTypeID != 23)
+    //     //   return `${str}, '${value}'`;
+    //     // else
+    //     //   return `${str}, dupa`;
+    //     return 'dupa';
+    //   })})`;
+    //   console.log(query);
+    //   // pool.query(query);
+    //   res.redirect(`/db/allTables#${tableName}`);
+    // } catch (err) {
+    //   console.error(err);
+    //   res.send(err);
+    // }
   }
 
   showSimpleInsertForm = async (req, res, tableName) => {

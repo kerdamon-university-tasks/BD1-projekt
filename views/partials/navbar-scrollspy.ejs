@@ -1,9 +1,14 @@
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top navbar-scrollspy">
-  <ul class="navbar-nav">
-    <% resultTables.forEach(function(table) { %>
-      <li class="nav-item">
-        <a class="nav-link" href="#<%= table.tableDisplayName %>"><%= table.tableDisplayName %></a>
-      </li>
-    <% }); %>
-  </ul>
+<nav class="navbar navbar-expand-xl bg-dark navbar-dark sticky-top navbar-scrollspy">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <% resultTables.forEach(function(table) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="#<%= table.tableDisplayName %>"><%= table.tableDisplayName %></a>
+        </li>
+      <% }); %>
+    </ul>
+    </div>
 </nav>
