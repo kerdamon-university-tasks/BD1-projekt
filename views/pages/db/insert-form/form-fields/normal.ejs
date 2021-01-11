@@ -2,8 +2,8 @@
     <label for="<%= field.name %>"><%= field.name %>:</label>
     
     <% if (field.state === 'normal') { %>
-      <input type="text" class="form-control" id="<%= field.name %>" name="<%= field.name %>">
+      <input type="text" class="form-control" id="<%= tableName %>-<%= field.name %>" name="<%= tableName %>-<%= field.name %>">
     <% } else if (field.state === 'autonumerated') { %>
-      <input type="text" class="form-control" placeholder="Automatyczne numerowanie" id="<%= field.name %>" disabled>
+      <input type="text" class="form-control" value="Automatyczne numerowanie" id="<%= field.name %>" name="<%= tableName %>-<%= field.name %>" readonly>
     <% } %>
   </div>

@@ -22,12 +22,12 @@
   
   <div class="container">
     <div class="jumbotron">
-      <form action="/db/insert/insertIntoTable/<%= tableNames.join('_') %>" method="POST">
+      <form action="/db/insert/complexInsertIntoTable/<%= tableNames.join('_') %>" method="POST">
 
         <% tables.singleInsert.forEach(table => { %>
           <h1><%= table.name %></h1>
           <% table.fields.forEach(field => { %>
-            <%- include('form-fields/normal', {field}); %>
+            <%- include('form-fields/normal', {field, tableName: table.name}); %>
           <% }) %>
         <% }) %>
 
@@ -35,7 +35,7 @@
           <h1><%= table.name %></h1>
           <% table.secondPkField.values.forEach(value => { %>
             <% table.fields.forEach(field => { %>
-              <%- include('form-fields/multi', {field, value, commonFieldName: table.commonFieldName, secondPkFieldName: table.secondPkField.name}); %>
+              <%- include('form-fields/multi', {field, value, commonFieldName: table.commonFieldName, secondPkFieldName: table.secondPkField.name, tableName: table.name}); %>
             <% }) %>
           <% }) %>
         <% }) %>
