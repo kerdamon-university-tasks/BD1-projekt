@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../../partials/head'); %>
+</head>
+
+<body>
+
+  <%- include('../../../partials/nav'); %>
+  <% 
+    let tableNames = [];
+    tables.singleInsert.forEach(table => {
+      tableNames.push(table.name);
+    });
+    tables.multipleInsert.forEach(table => {
+      tableNames.push(table.name);
+    });
+  %>
+  <%- 
+    include('../../../partials/header', {headerText: `Wstawianie danych do tabel: ${tableNames.join(', ')}`}); 
+  %>
+  
+  <div class="container">
+    <div class="jumbotron">
+      <form action="/db/insert/insertIntoTable/<%= tableNames.join('_') %>" method="POST">
+
+        <% tables.singleInsert.forEach(table => { %>
+          <h1><%= table.name %></h1>
+          <% table.fields.forEach(field => { %>
+            <%- include('form-fields/normal', {field}); %>
+          <% }) %>
+        <% }) %>
+
+        <% tables.multipleInsert.forEach(table => { %>
+          <h1><%= table.name %></h1>
+          <% table.secondPkField.values.forEach(value => { %>
+            <% table.fields.forEach(field => { %>
+              <%- include('form-fields/multi', {field, value, commonFieldName: table.commonFieldName, secondPkFieldName: table.secondPkField.name}); %>
+            <% }) %>
+          <% }) %>
+        <% }) %>
+
+        <button type="submit" class="btn btn-primary">Wprowadź</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

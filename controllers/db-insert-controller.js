@@ -1,5 +1,6 @@
 const pool = require('../db/database-connection');
 const { complexTableNames, complexFormNames, tableNamesWithAutonumeratedFirstId } = require('../db/table-info');
+const complexInsertController = require('./db-complex-insert-controller');
 
 class DbInsertController
 {
@@ -10,6 +11,24 @@ class DbInsertController
     }
     else
       await this.showComplexInsertForm(req, res);
+  }
+
+  showSimpleInsertForm = async (req, res, tableName) => {
+    const results = await pool.query(`SELECT * FROM ${tableName}`);
+    let excludeFirst = false;
+    if(tableNamesWithAutonumeratedFirstId.includes(tableName))
+      excludeFirst = true;
+    res.render('pages/db-insert-table-form', { isLogged: req.session.loggedin, tableName, fields: results.fields, excludeFirst});
+  }
+
+  showComplexInsertForm = async (req, res) => {
+    try{
+      complexInsertController[`showForm_${req.params.tableName}`](req, res);
+    }
+    catch (e){
+      if (e instanceof TypeError)
+      res.send('No handling function found for this table.');
+    }
   }
 
   insertIntoTable = async (req, res) => {
@@ -49,18 +68,6 @@ class DbInsertController
       fieldsString.push(field.name);
     });
     return `INSERT INTO ${tableName} (${fieldsString.join()}) VALUES (${dollars.join()})`;
-  }
-
-  showSimpleInsertForm = async (req, res, tableName) => {
-    const results = await pool.query(`SELECT * FROM ${tableName}`);
-    let excludeFirst = false;
-    if(tableNamesWithAutonumeratedFirstId.includes(tableName))
-      excludeFirst = true;
-    res.render('pages/db-insert-table-form', { isLogged: req.session.loggedin, tableName, results, excludeFirst});
-  }
-
-  showComplexInsertForm = async (req, res) => {
-    res.send("complex");
   }
 }
 

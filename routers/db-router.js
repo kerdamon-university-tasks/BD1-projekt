@@ -7,7 +7,8 @@ const insertRouter = require('./db-insert-router');
 
 const router = Router();
 
-router.get('/', middlewares.checkSignIn, controller.showDBHub);
+router.get('/', controller.showDBHub);
+// router.get('/', middlewares.checkSignIn, controller.showDBHub);
 router.get('/allTables', middlewares.checkSignIn, controller.selectAllTables);
 router.get('/allViews', middlewares.checkSignIn, controller.selectAllViews);
 

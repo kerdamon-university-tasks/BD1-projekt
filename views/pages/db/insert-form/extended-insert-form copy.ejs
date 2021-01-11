@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../../partials/head'); %>
+</head>
+
+<body>
+
+  <%- include('../../../partials/nav'); %>
+  <%- include('../../../partials/header', {headerText: `Wstawianie danych do tabel: ${tableNames.join(', ')}`}); %>
+  
+  <div class="container">
+    <div class="jumbotron">
+      <form action="/db/insert/insertIntoTable/<%= tableNames.join('_') %>" method="POST">
+        <% let f = fields;
+          if(excludeFirst) {
+            f = fields.slice(1); %>
+            <%- include('form-fields/autonumerated'); %>
+          <% }
+          f.forEach(function(field) { %>
+            <%- include('form-fields/normal', {field}); %>
+        <% }); %>
+        <button type="submit" class="btn btn-primary">Wprowadź</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

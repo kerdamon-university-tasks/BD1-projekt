@@ -12,12 +12,12 @@
   <div class="container">
     <div class="jumbotron">
       <form action="/db/insert/insertIntoTable/<%= tableName %>" method="POST">
-        <% let f = results.fields;
+        <% let f = fields;
           if(excludeFirst) {
-            f = results.fields.slice(1); %>
+            f = fields.slice(1); %>
             <div class="form-group">
-              <label for="<%= results.fields[0].name %>"><%= results.fields[0].name %>:</label>
-              <input type="text" class="form-control" placeholder="Automatyczne numerowanie" id="<%= results.fields[0].name %>" disabled>
+              <label for="<%= fields[0].name %>"><%= fields[0].name %>:</label>
+              <input type="text" class="form-control" placeholder="Automatyczne numerowanie" id="<%= fields[0].name %>" disabled>
             </div>
           <% }
           f.forEach(function(field) { %>
