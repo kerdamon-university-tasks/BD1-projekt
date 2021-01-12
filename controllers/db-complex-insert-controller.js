@@ -59,12 +59,76 @@ class ComplexInsertController
 
       // console.log(querries);
 
-      querries.forEach(element => {
-        client.query(element.query, element.values);
-      });
+      for (const element of querries) {
+        await client.query(element.query, element.values);
+      }
 
       await client.query('COMMIT')
       res.redirect(`/db/allTables#spotkanie`);
+    } catch (err) {
+      await client.query('ROLLBACK')
+      res.render('pages/db-error', { isLogged: req.session.loggedin, err });
+    } finally {
+      client.release()
+    }
+  }
+
+  insertInto_wydarzenie_uczestnik = async (req, res) => {
+    const tableName = req.params.tableName;
+    const tableData = req.body;
+
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+
+      // get wydarzenie_id
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      let wydarzenie_id_QueryText; 
+      let wydarzenie_id_values = [];
+      for (const elem in tableData) {
+        if(elem.includes('wydarzenie')){
+          if(elem.includes('nazwa') || elem.includes('motyw_przewodni') || elem.includes('data_od') || elem.includes('data_do') || elem.includes('grafik_wydarzenia')){
+            wydarzenie_id_values.push(tableData[elem]);
+          }
+        }
+      }
+
+      wydarzenie_id_QueryText = `INSERT INTO wydarzenie VALUES (default, $1, $2, $3, $4, $5) RETURNING wydarzenie_id`;
+
+
+      const result = await client.query(wydarzenie_id_QueryText, wydarzenie_id_values)
+      let wydarzenie_id = result.rows[0].wydarzenie_id;
+      // console.log(wydarzenie_id);
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      // prepare uczestnik queries
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      let querries = [];
+      let uczestnikData = {}
+      for (const elem in tableData) {
+  
+        if(elem.includes('uczestnik')){
+          let id = elem.substring(elem.length - 5);
+  
+          if (tableData[elem] != ''){
+            uczestnikData[id] = tableData[elem];
+          }
+        }
+      }
+  
+      for (const key in uczestnikData) {
+        querries.push({query: `INSERT INTO uczestnik VALUES ($1, $2, $3)`, values: [parseInt(key), wydarzenie_id, uczestnikData[key]]});
+      }
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      // console.log(querries);
+
+      for (const element of querries) {
+        await client.query(element.query, element.values);
+      }
+
+      await client.query('COMMIT')
+      res.redirect(`/db/allTables#wydarzenie`);
     } catch (err) {
       await client.query('ROLLBACK')
       res.render('pages/db-error', { isLogged: req.session.loggedin, err });
@@ -110,25 +174,43 @@ class ComplexInsertController
   }
 
   showForm_wydarzenie_uczestnik = async (req, res) => {
-    const tableName = req.params.tableName;
     const results_wydarzenie = await pool.query(`SELECT * FROM wydarzenie`);
     const results_uczestnik = await pool.query(`SELECT * FROM uczestnik`);
+    const results_czlonek = await pool.query('SELECT * FROM czlonek');
 
-    let fields = this.joinTableResults(results_wydarzenie, results_uczestnik, 'wydarzenie_id');
+    let wydarzenie_fields = [];
+    results_wydarzenie.fields.forEach(field => {
+      let state;
+      if(field.name === 'wydarzenie_id')
+        state = 'autonumerated';
+      else
+        state = 'normal';
+        wydarzenie_fields.push({name: field.name, state});
+    });
 
-    let excludeFirst = true;
-    res.render('pages/db-insert-table-form', { isLogged: req.session.loggedin, tableName, fields, excludeFirst});
+    let uczestnik_fields = [];
+    results_uczestnik.fields.forEach(field => {
+      uczestnik_fields.push({name: field.name, type: field.dataTypeID, state: 'normal'});
+    });
+
+    let uczestnik_values = [];
+    results_czlonek.rows.forEach(row => {
+      uczestnik_values.push(row.czlonek_id);
+    });
+
+    let singleInsert = [{name: 'wydarzenie', fields: wydarzenie_fields}];
+    let multipleInsert = [{name: 'uczestnik', commonFieldName: 'wydarzenie_id', secondPkField: {name: 'czlonek_id', values: uczestnik_values}, fields: uczestnik_fields}];
+
+    let tables = {
+      singleInsert,
+      multipleInsert
+    }
+
+    res.render('pages/db/insert-form/extended-insert-form', { isLogged: req.session.loggedin, tables});
   }
 
   showForm_zarzad_czlonek_zarzadu = async (req, res) => {
-    const tableName = req.params.tableName;
-    const results_zarzad = await pool.query(`SELECT * FROM zarzad`);
-    const results_czlonek_zarzadu = await pool.query(`SELECT * FROM czlonek_zarzadu`);
-
-    let fields = this.joinTableResults(results_zarzad, results_czlonek_zarzadu, 'zarzad_id');
-
-    let excludeFirst = true;
-    res.render('pages/db-insert-table-form', { isLogged: req.session.loggedin, tableName, fields, excludeFirst});
+    res.send("nie gotowe");
   }
 }
 

@@ -15,12 +15,13 @@ function HTTPErrorHandler(res, req, err){
 }
 
 function checkSignIn (req, res, next) {
-  if (req.session.loggedin) {
-    next();
-  } else {
-    var err = createError(401, 'Nie zalogowano');
-    next(err);
-  }
+  // if (req.session.loggedin) {
+  //   next();
+  // } else {
+  //   var err = createError(401, 'Nie zalogowano');
+  //   next(err);
+  // }
+  next();
 }
 
 module.exports = {

@@ -10,5 +10,7 @@ const router = Router();
 router.get('/:tableName', middlewares.checkSignIn, simpleInsertController.showInsertForm);
 router.post('/insertIntoTable/:tableName', middlewares.checkSignIn, simpleInsertController.insertIntoTable);
 router.post('/complexInsertIntoTable/spotkanie_obecnosc', middlewares.checkSignIn, complexInsertController.insertInto_spotkanie_obecnosc);
+router.post('/complexInsertIntoTable/wydarzenie_uczestnik', middlewares.checkSignIn, complexInsertController.insertInto_wydarzenie_uczestnik);
+
 
 module.exports = router;
