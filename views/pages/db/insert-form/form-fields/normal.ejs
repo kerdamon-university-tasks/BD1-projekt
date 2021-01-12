@@ -5,5 +5,7 @@
       <input type="text" class="form-control" id="<%= tableName %>-<%= field.name %>" name="<%= tableName %>-<%= field.name %>">
     <% } else if (field.state === 'autonumerated') { %>
       <input type="text" class="form-control" value="Automatyczne numerowanie" id="<%= field.name %>" name="<%= tableName %>-<%= field.name %>" readonly>
+    <% } else if (field.state === 'null') { %>
+      <input type="text" class="form-control" value="null" id="<%= field.name %>" name="<%= tableName %>-<%= field.name %>" readonly>
     <% } %>
   </div>
