@@ -65,9 +65,9 @@ class ComplexInsertController
 
       await client.query('COMMIT')
       res.redirect(`/db/allTables#spotkanie`);
-    } catch (e) {
+    } catch (err) {
       await client.query('ROLLBACK')
-      throw e
+      res.render('pages/db-error', { isLogged: req.session.loggedin, err });
     } finally {
       client.release()
     }
@@ -90,7 +90,7 @@ class ComplexInsertController
 
     let results_obecnosc_fields = [];
     results_obecnosc.fields.forEach(field => {
-      results_obecnosc_fields.push({name: field.name, state: 'normal'});
+      results_obecnosc_fields.push({name: field.name, type: field.dataTypeID, state: 'normal'});
     });
 
     let results_obecnosc_values = [];

@@ -1,0 +1,24 @@
+<% 
+
+  let fclass = "";
+  if (ftype === 'text'){
+    fclass = "form-control";
+  }
+
+  let fivalue = "";
+  if (typeof fvalue !== 'undefined'){
+    fivalue = `value=${fvalue}`;
+  }
+
+  let fiplaceholder = "";
+  if (typeof fplaceholder !== 'undefined'){
+    fiplaceholder = `value=${fplaceholder}`;
+  }
+
+  let fidisabled = "";
+  if (typeof fdisabled !== 'undefined'){
+    fidisabled = `${fdisabled}`;
+  }
+%> 
+<label for="<%= fname %>"><%= flabel %>:</label>
+<input type=<%= ftype %> class="<%= fclass %>" id="<%= fname %>" <%= fivalue %> <%= fiplaceholder %> name="<%= fname %>" <%= fidisabled %>>

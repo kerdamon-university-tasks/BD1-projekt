@@ -7,11 +7,8 @@ const middlewares = require('../middlewares/middleware-functions');
 
 const router = Router();
 
-router.get('/:tableName', simpleInsertController.showInsertForm);
-router.post('/insertIntoTable/:tableName', simpleInsertController.insertIntoTable);
-router.post('/complexInsertIntoTable/spotkanie_obecnosc', complexInsertController.insertInto_spotkanie_obecnosc);
-
-// router.get('/:tableName', middlewares.checkSignIn, controller.showInsertForm);
-// router.post('/insertIntoTable/:tableName', middlewares.checkSignIn, controller.insertIntoTable);
+router.get('/:tableName', middlewares.checkSignIn, simpleInsertController.showInsertForm);
+router.post('/insertIntoTable/:tableName', middlewares.checkSignIn, simpleInsertController.insertIntoTable);
+router.post('/complexInsertIntoTable/spotkanie_obecnosc', middlewares.checkSignIn, complexInsertController.insertInto_spotkanie_obecnosc);
 
 module.exports = router;
