@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+
+  <%- include('../partials/nav'); %>
+  <%- include('../partials/header', {headerText: `Usuwanie danych z tabeli ${tableName}`}); %>
+  
+  <div class="container">
+    <div class="jumbotron">
+      <form action="/db/delete/<%= tableName %>" method="POST">
+        <div class="form-group">
+          <label for="<%= idFieldName %>"><%= idFieldName %>:</label>
+          <input type="text" class="form-control" id="<%= idFieldName %>" name="<%= idFieldName %>">
+        </div>
+        <button type="submit" class="btn btn-primary">Wprowadź</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

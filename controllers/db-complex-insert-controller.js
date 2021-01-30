@@ -38,14 +38,11 @@ class ComplexInsertController
           let id = elem.substring(elem.length - 5);
           
           if(!(Object.keys(obecnoscData).includes(id))){
-            obecnoscData[id] = {obecny: false, oplacono_skladke: false};
+            obecnoscData[id] = {oplacono_skladke: false};
           }
   
           if(tableData[elem] === 'true'){
-            if(elem.includes('obecny')){
-              obecnoscData[id].obecny = true;
-            }
-            else if (elem.includes('oplacono_skladke')){
+            if (elem.includes('oplacono_skladke')){
               obecnoscData[id].oplacono_skladke = true;
             }
           }
@@ -53,7 +50,7 @@ class ComplexInsertController
       }
   
       for (const key in obecnoscData) {
-        querries.push({query: `UPDATE obecnosc SET obecny=$1, oplacono_skladke=$2 WHERE spotkanie_id=$3 AND czlonek_id=$4`, values: [obecnoscData[key].obecny, obecnoscData[key].oplacono_skladke, spotkanie_id, parseInt(key)]})
+        querries.push({query: `INSERT INTO obecnosc VALUES ($1, $2, $3)`, values: [parseInt(key), spotkanie_id, obecnoscData[key].oplacono_skladke]})
       }
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -87,13 +84,13 @@ class ComplexInsertController
       let wydarzenie_id_values = [];
       for (const elem in tableData) {
         if(elem.includes('wydarzenie')){
-          if(elem.includes('nazwa') || elem.includes('motyw_przewodni') || elem.includes('data_od') || elem.includes('data_do') || elem.includes('grafik_wydarzenia')){
+          if(elem.includes('nazwa') || elem.includes('motyw_przewodni') || elem.includes('data_od') || elem.includes('data_do')){
             wydarzenie_id_values.push(tableData[elem]);
           }
         }
       }
 
-      wydarzenie_id_QueryText = `INSERT INTO wydarzenie VALUES (default, $1, $2, $3, $4, $5) RETURNING wydarzenie_id`;
+      wydarzenie_id_QueryText = `INSERT INTO wydarzenie VALUES (default, $1, $2, $3, $4) RETURNING wydarzenie_id`;
 
 
       const result = await client.query(wydarzenie_id_QueryText, wydarzenie_id_values)

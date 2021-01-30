@@ -50,8 +50,9 @@ class DbInsertController
     }
 
     try{
-      await pool.query(query, insertValues);
-      res.redirect(`/db/allTables#${tableName}`);
+      let results = await pool.query(query, insertValues);
+      res.render('pages/db-successfully-added', { isLogged: req.session.loggedin, tableName, results} );
+      // res.redirect(`/db/allTables#${tableName}`);
     } catch (err) {
       console.error(err);
       res.render('pages/db-error', { isLogged: req.session.loggedin, err });
@@ -67,7 +68,7 @@ class DbInsertController
     fields.forEach(field => {
       fieldsString.push(field.name);
     });
-    return `INSERT INTO ${tableName} (${fieldsString.join()}) VALUES (${dollars.join()})`;
+    return `INSERT INTO ${tableName} (${fieldsString.join()}) VALUES (${dollars.join()}) RETURNING *`;
   }
 }
 

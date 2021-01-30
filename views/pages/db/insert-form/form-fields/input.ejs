@@ -20,5 +20,19 @@
     fidisabled = `${fdisabled}`;
   }
 %> 
+
+<% if (ftype === 'checkbox') { %>
+  <div class="form-check">
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" id="<%= fname %>" value='true' name="<%= fname %>">Zapłacono składkę
+    </label>
+  </div>
+  <div class="form-check">
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" id="<%= fname %>" value='false' name="<%= fname %>">Nie zapłacono składki
+    </label>
+  </div>
+<% } else {%>
 <label for="<%= fname %>"><%= flabel %>:</label>
 <input type=<%= ftype %> class="<%= fclass %>" id="<%= fname %>" <%= fivalue %> <%= fiplaceholder %> name="<%= fname %>" <%= fidisabled %>>
+<% } %>

@@ -19,12 +19,31 @@
       <div class="m-5 text-center">
         <a href="/db/allViews" class="btn-lg btn-info p-3" role="button"> Wszystkie Widoki </a>
       </div>
-      <div class="m-5 text-center">
-        <a href="/db/report" class="btn-lg btn-info p-3" role="button"> Raporty </a>
-      </div>
 
       <h2>Wprowadzanie danych</h2>
       <%- include('../partials/show-insert-table-names-and-links'); %>
+
+      <h2>Zakańczanie wypożyczenia</h2>
+      <div class="m-5 text-center">
+        <a href="/db/updateWypozyczenie" class="btn-lg btn-info p-3" role="button"> Aktualizowanie danych </a>
+      </div>
+
+      <h2>Usuwanie danych</h2>
+      <table class="table">
+        <tr>
+          <td><h4>typ_zasobu</h4></td>
+          <td><a href="/db/delete/typ_zasobu" class="btn btn-danger" role="button"> Usuń dane </a></td>
+        </tr>
+        <tr>
+          <td><h4>zasob</h4></td>
+          <td><a href="/db/delete/zasob" class="btn btn-danger" role="button"> Usuń dane </a></td>
+        </tr>
+        <tr>
+          <td><h4>wydarzenie</h4></td>
+          <td><a href="/db/delete/wydarzenie" class="btn btn-danger" role="button"> Usuń dane </a></td>
+        </tr>
+      </table>
+
     </div>
   </div>
 
