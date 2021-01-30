@@ -1,3 +1,0 @@
-- wywalić date z klucza głównego i dodać serial id
-- naprawić spotkanie_obecnosc
-- dodac opis na stronie głównej
