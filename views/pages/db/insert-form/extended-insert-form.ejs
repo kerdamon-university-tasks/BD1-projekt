@@ -43,6 +43,12 @@
         <button type="submit" class="btn btn-primary">Wprowadź</button>
       </form>
     </div>
+    <div class="jumbotron">
+      <% auxiliaryTables.forEach(table => { %>
+        <h2><%= table.tableName %></h2>
+        <%- include('../../../partials/db-basic-table.ejs', {results: table.results}); %>
+      <% }) %>
+    </div>
   </div>
 
 </body>

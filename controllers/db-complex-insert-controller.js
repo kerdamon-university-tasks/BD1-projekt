@@ -18,13 +18,13 @@ class ComplexInsertController
       for (const elem in tableData) {
         if(elem.includes('spotkanie')){
           if(elem.includes('data')){
-            spotkanie_id_QueryText = `INSERT INTO spotkanie VALUES (default, $1) RETURNING spotkanie_id`;
+            spotkanie_id_QueryText = `INSERT INTO spotkanie VALUES (default, $1) RETURNING *`;
             spotkanie_id_values = [tableData[elem]];
           }
         }
       }
-      const result = await client.query(spotkanie_id_QueryText, spotkanie_id_values)
-      let spotkanie_id = result.rows[0].spotkanie_id;
+      const resultSpotkanie = await client.query(spotkanie_id_QueryText, spotkanie_id_values)
+      let spotkanie_id = resultSpotkanie.rows[0].spotkanie_id;
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
       // prepare obecnosc queries
@@ -50,7 +50,7 @@ class ComplexInsertController
       }
   
       for (const key in obecnoscData) {
-        querries.push({query: `INSERT INTO obecnosc VALUES ($1, $2, $3)`, values: [parseInt(key), spotkanie_id, obecnoscData[key].oplacono_skladke]})
+        querries.push({query: `INSERT INTO obecnosc VALUES ($1, $2, $3) RETURNING *`, values: [parseInt(key), spotkanie_id, obecnoscData[key].oplacono_skladke]})
       }
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -60,8 +60,10 @@ class ComplexInsertController
         await client.query(element.query, element.values);
       }
 
+      const resultObecnosc = await client.query('SELECT * FROM obecnosc WHERE spotkanie_id=$1', [spotkanie_id]);
+
       await client.query('COMMIT')
-      res.redirect(`/db/allTables#spotkanie`);
+      res.render('pages/db-successfully-added-extended', { isLogged: req.session.loggedin, tableNameOne: 'spotkanie', tableNameMany: 'obecnosc', resultsOne: resultSpotkanie, resultsMany: resultObecnosc} );
     } catch (err) {
       await client.query('ROLLBACK')
       res.render('pages/db-error', { isLogged: req.session.loggedin, err });
@@ -93,8 +95,8 @@ class ComplexInsertController
       wydarzenie_id_QueryText = `INSERT INTO wydarzenie VALUES (default, $1, $2, $3, $4) RETURNING wydarzenie_id`;
 
 
-      const result = await client.query(wydarzenie_id_QueryText, wydarzenie_id_values)
-      let wydarzenie_id = result.rows[0].wydarzenie_id;
+      const resultWydarzenie = await client.query(wydarzenie_id_QueryText, wydarzenie_id_values)
+      let wydarzenie_id = resultWydarzenie.rows[0].wydarzenie_id;
       // console.log(wydarzenie_id);
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -124,8 +126,11 @@ class ComplexInsertController
         await client.query(element.query, element.values);
       }
 
+      const resultUczestnik = await client.query('SELECT * FROM uczestnik WHERE wydarzenie_id=$1', [wydarzenie_id]);
+
       await client.query('COMMIT')
-      res.redirect(`/db/allTables#wydarzenie`);
+      // res.redirect(`/db/allTables#wydarzenie`);
+      res.render('pages/db-successfully-added-extended', { isLogged: req.session.loggedin, tableNameOne: 'wydarzenie', tableNameMany: 'uczestnik', resultsOne: resultWydarzenie, resultsMany: resultUczestnik} );
     } catch (err) {
       await client.query('ROLLBACK')
       res.render('pages/db-error', { isLogged: req.session.loggedin, err });
@@ -159,8 +164,8 @@ class ComplexInsertController
 
       zarzad_id_QueryText = `INSERT INTO zarzad VALUES (default, $1, $2) RETURNING zarzad_id`;
 
-      const result = await client.query(zarzad_id_QueryText, zarzad_id_values)
-      let zarzad_id = result.rows[0].zarzad_id;
+      const resultZarzad = await client.query(zarzad_id_QueryText, zarzad_id_values)
+      let zarzad_id = resultZarzad.rows[0].zarzad_id;
       // console.log(zarzad_id);
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -188,8 +193,11 @@ class ComplexInsertController
         await client.query(element.query, element.values);
       }
 
+      const resultCzlonekZarzadu = await client.query('SELECT * FROM czlonek_zarzadu WHERE zarzad_id=$1', [zarzad_id]);
+
       await client.query('COMMIT')
-      res.redirect(`/db/allTables#zarzad`);
+      res.render('pages/db-successfully-added-extended', { isLogged: req.session.loggedin, tableNameOne: 'zarzad', tableNameMany: 'czlonek_zarzadu', resultsOne: resultZarzad, resultsMany: resultCzlonekZarzadu} );
+      // res.redirect(`/db/allTables#zarzad`);
     } catch (err) {
       await client.query('ROLLBACK')
       res.render('pages/db-error', { isLogged: req.session.loggedin, err });
@@ -231,7 +239,11 @@ class ComplexInsertController
       multipleInsert
     }
 
-    res.render('pages/db/insert-form/extended-insert-form', { isLogged: req.session.loggedin, tables});
+    const auxiliaryTables = [];
+    let results = await pool.query(`SELECT * FROM czlonek`);
+    auxiliaryTables.push({tableName: 'czlonek', results});
+
+    res.render('pages/db/insert-form/extended-insert-form', { isLogged: req.session.loggedin, auxiliaryTables, tables});
   }
 
   showForm_wydarzenie_uczestnik = async (req, res) => {
@@ -267,7 +279,13 @@ class ComplexInsertController
       multipleInsert
     }
 
-    res.render('pages/db/insert-form/extended-insert-form', { isLogged: req.session.loggedin, tables});
+    const auxiliaryTables = [];
+    let results = await pool.query(`SELECT * FROM czlonek`);
+    auxiliaryTables.push({tableName: 'czlonek', results});
+    results = await pool.query(`SELECT * FROM uczestnik_funkcja`);
+    auxiliaryTables.push({tableName: 'uczestnik_funkcja', results});
+
+    res.render('pages/db/insert-form/extended-insert-form', { isLogged: req.session.loggedin, tables, auxiliaryTables});
   }
 
   showForm_zarzad_czlonek_zarzadu = async (req, res) => {
@@ -305,7 +323,15 @@ class ComplexInsertController
       multipleInsert
     }
 
-    res.render('pages/db/insert-form/extended-insert-form', { isLogged: req.session.loggedin, tables});
+    const auxiliaryTables = [];
+    let results = await pool.query(`select czlonek_id, imie, nazwisko from (select * from (select * from czlonek join aktualny_status using (czlonek_id) where status=3) a left join wypozyczenia_czlonkow using(czlonek_id) where przetrzymane is null) b left join liczba_ominietych_skladek using(czlonek_id) where ominietych_skladek is null`);
+    auxiliaryTables.push({tableName: 'Członkowie mogący zasiąść w zarządzie', results});
+    results = await pool.query(`SELECT * FROM pozycja_w_zarzadzie`);
+    auxiliaryTables.push({tableName: 'pozycja_w_zarzadzie', results});
+    results = await pool.query(`SELECT * FROM aktualny_zarzad`);
+    auxiliaryTables.push({tableName: 'aktualny_zarzad', results});
+
+    res.render('pages/db/insert-form/extended-insert-form', { isLogged: req.session.loggedin, tables, auxiliaryTables});
   }
 }
 

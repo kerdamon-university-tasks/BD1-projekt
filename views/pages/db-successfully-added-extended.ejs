@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+  <title>Pomyślnie dodano rekord</title>
+</head>
+
+<body>
+  <%- include('../partials/nav'); %>
+  <div class="container">
+    <div class="jumbotron bg-success text-white">
+      <h1>Pomyślnie dodano rekord</h1>
+      <h2><%= tableNameOne %> </h2>
+      <%- include('../partials/db-basic-table.ejs', {results: resultsOne, tableName: tableNameOne}); %>
+      <h2><%= tableNameMany %> </h2>
+      <%- include('../partials/db-basic-table.ejs', {results: resultsMany, tableName: tableNameMany}); %>
+      <a href="/db/allTables#<%= tableNameOne %> " class="btn btn-info border" role="button"> Przejdź do tabeli </a>
+      <a href="/db" class="btn btn-warning border" role="button"> Powrót do wstawiania </a>
+    </div>
+  </div>
+</body>
+
+</html>

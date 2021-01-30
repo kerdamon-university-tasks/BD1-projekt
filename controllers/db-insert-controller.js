@@ -18,7 +18,32 @@ class DbInsertController
     let excludeFirst = false;
     if(tableNamesWithAutonumeratedFirstId.includes(tableName))
       excludeFirst = true;
-    res.render('pages/db-insert-table-form', { isLogged: req.session.loggedin, tableName, fields: results.fields, excludeFirst});
+
+    const tables = [];
+    if(tableName === 'status_czlonka'){
+      let results = await pool.query(`SELECT * FROM status_czlonka`);
+      tables.push({tableName: 'status_czlonka', results});
+      results = await pool.query(`SELECT * FROM czlonek`);
+      tables.push({tableName: 'czlonek', results});
+      results = await pool.query(`SELECT * FROM status_nazwa`);
+      tables.push({tableName: 'status_nazwa', results});
+    }
+
+    if(tableName === 'zasob'){
+      let results = await pool.query(`SELECT * FROM typ_zasobu`);
+      tables.push({tableName: 'typ_zasobu', results});
+    }
+
+    if(tableName === 'wypozyczenie'){
+      let results = await pool.query(`SELECT * FROM dostepne_zasoby`);
+      tables.push({tableName: 'dostepne_zasoby', results});
+      results = await pool.query(`SELECT * FROM typ_zasobu`);
+      tables.push({tableName: 'typ_zasobu', results});
+      results = await pool.query(`select czlonek_id, imie, nazwisko from (select * from czlonek join aktualny_status using (czlonek_id) where status=3) a left join wypozyczenia_czlonkow using(czlonek_id) where przetrzymane is null and (wypozyczonych<3 or wypozyczonych is null);`);
+      tables.push({tableName: 'Członkowie mogący wypożyczać', results});
+    }
+
+    res.render('pages/db-insert-table-form', { isLogged: req.session.loggedin, tableName, fields: results.fields, excludeFirst, tables});
   }
 
   showComplexInsertForm = async (req, res) => {
