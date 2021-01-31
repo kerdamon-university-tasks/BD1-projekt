@@ -126,7 +126,7 @@ class DbController
     const tableName = req.params.tableName;
 
     const auxiliaryTables = [];
-    let results = await pool.query(`SELECT * FROM wypozyczenie`);
+    let results = await pool.query(`SELECT * FROM wypozyczenie WHERE data_do is null`);
     auxiliaryTables.push({tableName: 'wypozyczenie', results});
 
     res.render('pages/db-update-wypozyczenie-form', { isLogged: req.session.loggedin, tableName, tables: auxiliaryTables });
