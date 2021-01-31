@@ -18,6 +18,9 @@ router.get('/czlonek/:id', controller.showSpecifiedMember);
 router.get('/updateWypozyczenie', middlewares.checkSignIn, controller.showUpdateWypozyczenieForm);
 router.post('/updateWypozyczenie', middlewares.checkSignIn, controller.updateWypozyczenie);
 
+router.get('/updateObecnosc', middlewares.checkSignIn, controller.showUpdateObecnoscForm);
+router.post('/updateObecnosc', middlewares.checkSignIn, controller.updateObecnosc);
+
 router.use('/insert', insertRouter);
 router.use('/delete', deleteRouter);
 

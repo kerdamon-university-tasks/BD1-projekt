@@ -132,6 +132,20 @@ class DbController
     res.render('pages/db-update-wypozyczenie-form', { isLogged: req.session.loggedin, tableName, tables: auxiliaryTables });
   }
 
+  showUpdateObecnoscForm = async (req, res) => {
+    const tableName = req.params.tableName;
+
+    const auxiliaryTables = [];
+    let results = await pool.query(`SELECT * FROM obecnosc`);
+    auxiliaryTables.push({tableName: 'obecnosc', results});
+    results = await pool.query(`SELECT * FROM czlonek`);
+    auxiliaryTables.push({tableName: 'czlonek', results});
+    results = await pool.query(`SELECT * FROM spotkanie`);
+    auxiliaryTables.push({tableName: 'spotkanie', results});
+
+    res.render('pages/db-update-obecnosc-form', { isLogged: req.session.loggedin, tableName, tables: auxiliaryTables });
+  }
+
   updateWypozyczenie = async (req, res) => {
     const tableData = req.body;
     const tableName = req.params.tableName;
@@ -148,6 +162,21 @@ class DbController
     }
   }
 
+  updateObecnosc = async (req, res) => {
+    const tableData = req.body;
+    const tableName = req.params.tableName;
+
+    let queryString = ('UPDATE obecnosc SET oplacono_skladke=$1 WHERE czlonek_id=$2 AND spotkanie_id=$3 RETURNING *');
+    let queryValues = [tableData.oplacono_skladke, tableData.czlonek_id, tableData.spotkanie_id];
+
+    try{
+      let results = await pool.query(queryString, queryValues);
+      res.render('pages/db-successfully-updated', { isLogged: req.session.loggedin, tableName, results} );
+    } catch (err) {
+      console.error(err);
+      res.render('pages/db-error', { isLogged: req.session.loggedin, err });
+    }
+  }
 }
 
 const controller = new DbController();
