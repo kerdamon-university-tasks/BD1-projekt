@@ -77,7 +77,6 @@ class DbInsertController
     try{
       let results = await pool.query(query, insertValues);
       res.render('pages/db-successfully-added', { isLogged: req.session.loggedin, tableName, results} );
-      // res.redirect(`/db/allTables#${tableName}`);
     } catch (err) {
       console.error(err);
       res.render('pages/db-error', { isLogged: req.session.loggedin, err });

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+  <title>Pomyślnie zaktualizowano rekord</title>
+</head>
+
+<body>
+  <%- include('../partials/nav'); %>
+  <div class="container">
+    <div class="jumbotron bg-success text-white">
+      <h1>Pomyślnie zaktualizowano rekord</h1>
+      <%- include('../partials/db-basic-table.ejs'); %>
+      <a href="/db/allTables#<%= tableName %> " class="btn btn-info border" role="button"> Przejdź do tabeli </a>
+      <a href="/db" class="btn btn-warning border" role="button"> Powrót do wstawiania </a>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -124,19 +124,24 @@ class DbController
 
   showUpdateWypozyczenieForm = async (req, res) => {
     const tableName = req.params.tableName;
-    res.render('pages/db-update-wypozyczenie-form', { isLogged: req.session.loggedin, tableName });
+
+    const auxiliaryTables = [];
+    let results = await pool.query(`SELECT * FROM wypozyczenie`);
+    auxiliaryTables.push({tableName: 'wypozyczenie', results});
+
+    res.render('pages/db-update-wypozyczenie-form', { isLogged: req.session.loggedin, tableName, tables: auxiliaryTables });
   }
 
   updateWypozyczenie = async (req, res) => {
     const tableData = req.body;
     const tableName = req.params.tableName;
 
-    let queryString = ('UPDATE wypozyczenie SET data_do=$1 WHERE zasob_id=$2 AND czlonek_id=$3');
+    let queryString = ('UPDATE wypozyczenie SET data_do=$1 WHERE zasob_id=$2 AND czlonek_id=$3 RETURNING *');
     let queryValues = [tableData.data_do, tableData.zasob_id, tableData.czlonek_id];
 
     try{
-      await pool.query(queryString, queryValues);
-      res.redirect(`/db/allTables#${tableName}`);
+      let results = await pool.query(queryString, queryValues);
+      res.render('pages/db-successfully-updated', { isLogged: req.session.loggedin, tableName, results} );
     } catch (err) {
       console.error(err);
       res.render('pages/db-error', { isLogged: req.session.loggedin, err });

@@ -27,6 +27,12 @@
         <button type="submit" class="btn btn-primary">Zaktualizuj</button>
       </form>
     </div>
+    <div class="jumbotron">
+      <% tables.forEach(table => { %>
+        <h2><%= table.tableName %></h2>
+        <%- include('../partials/db-basic-table.ejs', {results: table.results}); %>
+      <% }) %>
+    </div>
   </div>
 
 </body>
