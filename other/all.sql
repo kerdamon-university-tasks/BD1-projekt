@@ -228,9 +228,9 @@ with brak_skladki_czlonka_zwyczajnego_na_spotkaniu as
             join spotkanie using(spotkanie_id)
         ) brak_skladki_data
         join status_czlonka using(czlonek_id)
-        where brak_skladki_data.data>=status_czlonka.data_od
-          and (brak_skladki_data.data<=status_czlonka.data_do or brak_skladki_data.data<current_date and status_czlonka.data_do is null)
-          and status_czlonka.status=3
+            where brak_skladki_data.data>=status_czlonka.data_od
+             and (brak_skladki_data.data<=status_czlonka.data_do or status_czlonka.data_do is null)
+                and status_czlonka.status=3
     )
 select count(*) as ominietych_skladek, czlonek_id from brak_skladki_czlonka_zwyczajnego_na_spotkaniu group by czlonek_id;
 
@@ -625,6 +625,7 @@ insert into czlonek_zarzadu values (2, 6, 3);
 -- cotygodniowe spotkanie
 insert into spotkanie values (default, '2020-11-7');
 insert into spotkanie values (default, '2020-11-14');
+insert into spotkanie values (default, '2017-08-20');
 
 -- obecność na cotygodniowym spotkaniu
 insert into obecnosc values (1, 1, true);
@@ -642,6 +643,8 @@ insert into obecnosc values (2, 2, false);
 insert into obecnosc values (3, 2, true);
 insert into obecnosc values (4, 2, true);
 insert into obecnosc values (9, 2, false);
+
+insert into obecnosc values (8, 3, false);
 
 -- typ zasobu
 insert into typ_zasobu values (default, 'Gra planszowa', 'Gra która ma planszę.');
